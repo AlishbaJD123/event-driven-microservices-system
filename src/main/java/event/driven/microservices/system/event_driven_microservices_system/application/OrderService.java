@@ -3,12 +3,13 @@ package event.driven.microservices.system.event_driven_microservices_system.appl
 import event.driven.microservices.system.event_driven_microservices_system.domain.Order;
 import event.driven.microservices.system.event_driven_microservices_system.domain.OrderRepository;
 import event.driven.microservices.system.event_driven_microservices_system.domain.OrderServicePort;
-import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class OrderService implements OrderServicePort {
     private final OrderRepository orderRepository;
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -20,6 +21,7 @@ public class OrderService implements OrderServicePort {
 
     @Override
     public void placeOrder(Order order) {
+        order.setId(UUID.randomUUID());
         order.setStatus("PENDING");
         orderRepository.saveOrder(order);
         kafkaTemplate.send("order-placed", "Order ID: " + order.getId());

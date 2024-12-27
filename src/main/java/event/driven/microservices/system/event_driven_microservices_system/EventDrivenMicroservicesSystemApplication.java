@@ -8,8 +8,6 @@ public class EventDrivenMicroservicesSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EventDrivenMicroservicesSystemApplication.class, args);
-
-
 	}
 
 }
